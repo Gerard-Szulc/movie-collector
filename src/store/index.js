@@ -1,14 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { request } from '@/utils/apiClient.js'
+import { movies } from '@/store/modules/movies'
 
 Vue.use(Vuex)
-const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS'
-const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS'
-const SET_SEARCH_CURRENT_PAGE = 'SET_SEARCH_CURRENT_PAGE'
-const SET_SEARCH_TOTAL_PAGES = 'SET_SEARCH_TOTAL_PAGES'
-const SET_SEARCH_TOTAL_RESULTS = 'SET_SEARCH_TOTAL_RESULTS'
-const SET_SEARCH_LOADING = 'SET_SEARCH_LOADING'
 
 const SET_CONFIGURATION = 'SET_CONFIGURATION'
 export default new Vuex.Store({
@@ -76,79 +71,6 @@ export default new Vuex.Store({
     }
   },
   modules: {
-    movies: {
-      namespaced: true,
-      state: {
-        favourite: [],
-        popular: []
-      },
-      mutations: {},
-      actions: {},
-      modules: {
-        search: {
-          namespaced: true,
-          state: {
-            loading: false,
-            searchResult: [],
-            totalPages: 0,
-            totalResults: 0,
-            currentPage: 0
-          },
-          getters: {
-            searchResultsGetter: state => {
-              return state.searchResult
-            }
-          },
-          mutations: {
-            CLEAR_SEARCH_RESULTS: (state) => {
-              state.searchResult = []
-            },
-            SET_SEARCH_RESULTS: (state, payload) => {
-              state.searchResult = payload
-            },
-            SET_SEARCH_CURRENT_PAGE: (state, payload) => {
-              state.currentPage = payload
-            },
-            SET_SEARCH_TOTAL_PAGES: (state, payload) => {
-              state.totalPages = payload
-            },
-            SET_SEARCH_TOTAL_RESULTS: (state, payload) => {
-              state.totalResults = payload
-            },
-            SET_SEARCH_LOADING: (state, payload) => {
-              state.loading = payload
-            }
-          },
-          actions: {
-            loadMovies ({
-              commit,
-              state
-            }, searchValue) {
-              commit(SET_SEARCH_LOADING, true)
-              if (!searchValue) {
-                commit(CLEAR_SEARCH_RESULTS)
-                return
-              }
-              request('/search/movie', 'get',
-                {
-                  params: {
-                    query: searchValue
-                  }
-                }).then(({ data }) => {
-                commit(SET_SEARCH_RESULTS, data.results)
-                commit(SET_SEARCH_CURRENT_PAGE, data.page)
-                commit(SET_SEARCH_TOTAL_PAGES, data.total_pages)
-                commit(SET_SEARCH_TOTAL_RESULTS, data.total_results)
-                commit(SET_SEARCH_LOADING, false)
-                this.seachResult = data.results
-              }).catch((error) => {
-                commit(SET_SEARCH_LOADING, false)
-                console.error(error)
-              })
-            }
-          }
-        }
-      }
-    }
+    movies
   }
 })

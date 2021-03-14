@@ -2,7 +2,7 @@
   <form @submit.prevent="redirectToSearchList" class="form-inline my-2 my-lg-0">
     <label for="search"></label>
     <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search movies" aria-label="Searchmovies"
-           v-model="searchTerm" @input="search">
+           v-model="searchValue" @input="search">
     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
   </form>
 </template>
@@ -15,8 +15,8 @@ export default {
   name: 'SearchBox',
   data () {
     return {
-      searchTerm: '',
-      typeTimeoutId: null
+      searchValue: '',
+      typingTimeoutId: null
     }
   },
   methods: {
@@ -24,18 +24,29 @@ export default {
       loadMovies: 'movies/search/loadMovies'
     }),
     redirectToSearchList () {
+      if (!this.searchValue) {
+        this.$router.push({
+          name: 'Home'
+        })
+        return
+      }
+      if (this.$route.name === 'search-results') {
+        return
+      }
       this.$router.push({
-        name: 'search-results',
-        params: { query: this.searchTerm }
+        name: 'search-results'
       })
     },
     search (event) {
       event.preventDefault()
-      if (this.typeTimeoutId) {
-        clearTimeout(this.typeTimeoutId)
+      if (this.typingTimeoutId) {
+        clearTimeout(this.typingTimeoutId)
       }
-      this.typeTimeoutId = setTimeout(() => {
-        this.loadMovies(this.searchTerm)
+      this.typingTimeoutId = setTimeout(() => {
+        this.loadMovies({
+          searchValue: this.searchValue,
+          redirect: this.redirectToSearchList
+        })
       }, SEARCH_TIMEOUT)
     }
   }
