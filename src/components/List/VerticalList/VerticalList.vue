@@ -2,7 +2,9 @@
   <div>
     <div class="vertical-list" v-if="list.length !== 0">
       <template v-for="element in list">
-        <ListItem :movie="element" :key="element.id"></ListItem>
+        <ListItem :item="element" :key="element.id">
+          <span slot="movie-info" class="movie-info">{{ new Date(element.release_date).getFullYear() || '' }}</span>
+        </ListItem>
       </template>
     </div>
     <div v-else>

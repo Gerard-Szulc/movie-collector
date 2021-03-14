@@ -68,6 +68,9 @@ export default new Vuex.Store({
     },
     posterSizesGetter: state => {
       return state.config.images.poster_sizes
+    },
+    backdropSizesGetter: state => {
+      return state.config.images.backdrop_sizes
     }
   },
   modules: {

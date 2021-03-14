@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="popular-movies-header">
+    <div class="horizontal-list-header">
       <h3>{{ title }}</h3>
       <div>
         <button class="btn" @click="() => handleScrollList(false)"><i class="bi-arrow-left-circle"></i></button>
@@ -10,7 +10,9 @@
     <div class="horizontal-list-wrapper" ref="horizontalListWrapper" v-if="!loading">
       <div class="horizontal-list" v-if="list.length !== 0">
         <template v-for="element in list">
-          <ListItem :movie="element" :key="element.id" @listElementEvent="handleElementEvent"></ListItem>
+          <ListItem :item="element" :key="element.id" @listElementEvent="handleElementEvent">
+            <span slot="movie-info" class="movie-info">{{ new Date(element.release_date).getFullYear() || '' }}</span>
+          </ListItem>
         </template>
       </div>
       <div v-else>
@@ -56,15 +58,32 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.popular-movies-header {
+@import "../../../../node_modules/bootstrap/scss/bootstrap";
+@import "../../../../node_modules/bootstrap/scss/variables";
+
+.horizontal-list-header {
+  padding: 10px;
   display: flex;
   justify-content: space-between;
 }
 
 .horizontal-list-wrapper {
+  &::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px $secondary;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $primary;
+    border-radius: 10px;
+  }
   max-width: 100vw;
   overflow: auto;
-  scroll-behavior: smooth;;
+  scroll-behavior: smooth;
 }
 
 .horizontal-list {
