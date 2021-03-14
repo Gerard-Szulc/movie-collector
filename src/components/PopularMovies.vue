@@ -1,12 +1,17 @@
 <template>
   <div>
-    <HorizontalList :title="'Popular movies'" :list="popularResultsGetter" :loading="loadingPopularMoviesGetter"></HorizontalList>
+    <HorizontalList
+      :title="'Popular movies'"
+      :list="popularResultsGetter"
+      :loading="loadingPopularMoviesGetter"
+      :empty-list-notice="'Sorry, no available element on this list.'"
+    ></HorizontalList>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import HorizontalList from '@/components/HorizontalList.vue'
+import HorizontalList from '@/components/List/HorizontalList/HorizontalList.vue'
 
 export default {
   name: 'PopularMovies',

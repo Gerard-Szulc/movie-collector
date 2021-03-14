@@ -1,5 +1,6 @@
 import { request } from '@/utils/apiClient.js'
-import { currentPageGetter, totalPagesGetter } from '@/store/utils/getters/getters.js'
+import { currentPageGetter, loadingGetter, totalPagesGetter } from '@/store/utils/getters/getters.js'
+
 const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE'
 const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS'
 const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS'
@@ -24,6 +25,7 @@ export const search = {
     },
     totalPagesGetter,
     currentPageGetter,
+    loadingGetter,
     searchValueGetter: state => {
       return state.searchValue
     }
@@ -55,6 +57,27 @@ export const search = {
     }
   },
   actions: {
+    changePage ({
+      commit,
+      state
+    }, page) {
+      request('/search/movie', 'get',
+        {
+          params: {
+            query: state.searchValue,
+            page
+          }
+        }).then(({ data }) => {
+        commit(SET_SEARCH_RESULTS, data.results)
+        commit(SET_SEARCH_CURRENT_PAGE, data.page)
+        commit(SET_SEARCH_TOTAL_PAGES, data.total_pages)
+        commit(SET_SEARCH_TOTAL_RESULTS, data.total_results)
+        commit(SET_SEARCH_LOADING, false)
+      }).catch((error) => {
+        commit(SET_SEARCH_LOADING, false)
+        console.error(error)
+      })
+    },
     loadMovies ({
       commit,
       state
@@ -82,7 +105,6 @@ export const search = {
         commit(SET_SEARCH_TOTAL_PAGES, data.total_pages)
         commit(SET_SEARCH_TOTAL_RESULTS, data.total_results)
         commit(SET_SEARCH_LOADING, false)
-        this.seachResult = data.results
         redirect()
       }).catch((error) => {
         commit(SET_SEARCH_LOADING, false)

@@ -15,7 +15,7 @@
       </div>
       <div v-else>
         <div class="alert alert-warning" role="alert">
-          Sorry, no available element on this list.
+          {{ emptyListNotice }}
         </div>
       </div>
     </div>
@@ -26,8 +26,9 @@
 </template>
 
 <script>
-import ListItem from '@/components/ListItem.vue'
+import ListItem from '@/components/Item/ListItem.vue'
 import Loading from '@/components/Loading.vue'
+import ListMixin from '@/components/List/ListMixin.js'
 
 export default {
   name: 'HorizontalList',
@@ -35,20 +36,9 @@ export default {
     Loading,
     ListItem
   },
-  props: {
-    title: {
-      type: String,
-      default: () => ''
-    },
-    list: {
-      type: Array,
-      default: () => []
-    },
-    loading: {
-      type: Boolean,
-      default: () => false
-    }
-  },
+  mixins: [
+    ListMixin
+  ],
   methods: {
     handleElementEvent ({
       eventName,

@@ -1,19 +1,27 @@
 <template>
   <div>
     <SearchList></SearchList>
-    <Pagination></Pagination>
   </div>
 </template>
 
 <script>
-import SearchList from '@/components/SearchList.vue'
-import Pagination from '@/components/Pagination.vue'
+import SearchList from '@/components/Search/SearchList.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Search',
   components: {
-    Pagination,
     SearchList
+  },
+  created () {
+    if (!this.searchValue) {
+      this.$router.push({ name: 'Home' })
+    }
+  },
+  computed: {
+    ...mapGetters({
+      searchValue: 'movies/search/searchValueGetter'
+    })
   }
 }
 </script>

@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import SearchBox from '@/components/SearchBox.vue'
+import SearchBox from '@/components/Search/SearchBox.vue'
 
 export default {
   name: 'NavBar',

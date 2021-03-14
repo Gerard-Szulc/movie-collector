@@ -1,12 +1,17 @@
 <template>
   <div>
-    <HorizontalList :title="'Favorite movies'" :list="favoritesResultsGetter"></HorizontalList>
+    <HorizontalList
+      :title="'Favorite movies'"
+      :list="favoritesResultsGetter"
+      :loading="loading"
+      :empty-list-notice="'Sorry, you have no favorite movies.'"
+    ></HorizontalList>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import HorizontalList from '@/components/HorizontalList.vue'
+import HorizontalList from '@/components/List/HorizontalList/HorizontalList.vue'
 
 export default {
   name: 'Favorites',
@@ -16,7 +21,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      favoritesResultsGetter: 'movies/favorites/favoritesResultsGetter'
+      favoritesResultsGetter: 'movies/favorites/favoritesResultsGetter',
+      loading: 'movies/favorites/loadingGetter'
     })
   },
   methods: {
