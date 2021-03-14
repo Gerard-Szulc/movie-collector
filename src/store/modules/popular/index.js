@@ -1,5 +1,5 @@
 import { request } from '@/utils/apiClient.js'
-import { currentPageGetter, totalPagesGetter } from '@/store/utils/getters/getters.js'
+import { currentPageGetter, loadingGetter, totalPagesGetter } from '@/store/utils/getters/getters.js'
 
 const SET_POPULAR_RESULTS = 'SET_POPULAR_RESULTS'
 const CLEAR_POPULAR_RESULTS = 'CLEAR_POPULAR_RESULTS'
@@ -20,12 +20,13 @@ export const popular = {
     popularResultsGetter: state => {
       return state.popular
     },
+    loadingPopularMoviesGetter: loadingGetter,
     totalPagesGetter,
     currentPageGetter
   },
   mutations: {
     CLEAR_POPULAR_RESULTS: (state) => {
-      state.searchResult = []
+      state.popular = []
       state.currentPage = 0
       state.totalPages = 0
       state.totalResults = 0

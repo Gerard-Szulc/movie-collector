@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HorizontalList :title="'Popular movies'" :list="popularResultsGetter"></HorizontalList>
+    <HorizontalList :title="'Popular movies'" :list="popularResultsGetter" :loading="loadingPopularMoviesGetter"></HorizontalList>
   </div>
 </template>
 
@@ -16,7 +16,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      popularResultsGetter: 'movies/popular/popularResultsGetter'
+      popularResultsGetter: 'movies/popular/popularResultsGetter',
+      loadingPopularMoviesGetter: 'movies/popular/loadingPopularMoviesGetter'
     })
   },
   methods: {

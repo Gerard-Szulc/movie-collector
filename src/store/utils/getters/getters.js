@@ -4,5 +4,8 @@ const totalPagesGetter = state => {
 const currentPageGetter = state => {
   return state.currentPage
 }
+const loadingGetter = state => {
+  return state.loading
+}
 
-export { currentPageGetter, totalPagesGetter }
+export { currentPageGetter, totalPagesGetter, loadingGetter }
