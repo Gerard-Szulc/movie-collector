@@ -1,9 +1,7 @@
 <template>
   <ListItem :item="element" :key="element.id">
-    <template v-if="!favoritesLoading" v-slot:list-item-header >
-      <div class="list-item-header" >
-        <i :class="isFavoriteMovie(element) ? `bi-star-fill`: 'bi-star'" @click="() => addFavorite(element)"></i>
-      </div>
+    <template v-slot:list-item-header >
+      <MovieListItemHeader :element="element"/>
     </template>
     <template v-slot:movie-info>
       <span class="movie-info">{{ new Date(element.release_date).getFullYear() || '' }}</span>
@@ -14,9 +12,10 @@
 <script>
 import ListItem from '@/components/Item/ListItem.vue'
 import { mapActions, mapGetters } from 'vuex'
+import MovieListItemHeader from '@/components/Item/MovieListItemHeader.vue'
 export default {
   name: 'MovieItem',
-  components: { ListItem },
+  components: { MovieListItemHeader, ListItem },
   props: {
     element: {
       type: Object,

@@ -12,7 +12,11 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="col-sm-3">
-            <list-item :item="movie" item-title-prop="" ></list-item>
+            <list-item :item="movie" item-title-prop="" >
+              <template v-slot:list-item-header >
+              <MovieListItemHeader :element="movie"/>
+              </template>
+            </list-item>
           </div>
           <div class="movie-details col-sm-9">
             <div class="container">
@@ -56,10 +60,11 @@ import ListItem from '@/components/Item/ListItem.vue'
 import axios from 'axios'
 import { request } from '@/utils/apiClient.js'
 import AdditionalInfo from '@/components/Movie/AdditionalInfo.vue'
+import MovieListItemHeader from '@/components/Item/MovieListItemHeader.vue'
 
 export default {
   name: 'Movie',
-  components: { AdditionalInfo, ListItem },
+  components: { MovieListItemHeader, AdditionalInfo, ListItem },
   props: {
     id: {
       required: true
@@ -88,7 +93,9 @@ export default {
       movie: 'movies/movieGetter',
       loading: 'movies/loadingGetter',
       backdropSizesGetter: 'backdropSizesGetter',
-      baseImageUrlGetter: 'baseImageUrlGetter'
+      baseImageUrlGetter: 'baseImageUrlGetter',
+      isFavoriteMovie: 'movies/favorites/isFavoriteMovieGetter',
+      favoritesLoading: 'movies/favorites/loadingGetter'
     }),
     primaryCast () {
       return this.cast.slice(0, 20)
@@ -96,7 +103,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getMovie: 'movies/loadMovie'
+      getMovie: 'movies/loadMovie',
+      addFavorite: 'movies/favorites/toggleFavoriteMovie'
     }),
     loadImages () {
       if (!this.movie.backdrop_path) {
