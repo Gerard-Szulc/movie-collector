@@ -1,12 +1,13 @@
 <template>
   <div class="card movie-card">
+    <slot name="list-item-header"></slot>
     <router-link :to="{
         name: 'movie',
         params: { id: item.id }
       }">
       <img
         v-if="item[itemImageProp]"
-        :src="`${baseImageUrlGetter}${posterSizesGetter[3]}${item[itemImageProp]}`"
+        :src="`${baseImageUrlGetter}${posterSizesGetter[1]}${item[itemImageProp]}`"
         class="card-img-top"
         :alt="item[itemTitleProp]"
       >
@@ -57,10 +58,13 @@ export default {
 </script>
 
 <style scoped>
+.list-item-header {
+  position: absolute;
+}
 .card.movie-card {
   cursor: pointer;
-  width: 10rem;
-  min-width: 10rem;
+  width: 158px;
+  min-width: 158px;
   margin: 14px;
   border-radius: 10px;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 15px 0 rgba(0, 0, 0, 0.19);
@@ -69,11 +73,7 @@ export default {
 
 .movie-card img {
   border-radius: 10px;
-  height: 15rem;
-}
-
-.movie-info {
-  color: #706f6f;
+  height: 237px;
 }
 
 .card-body {
@@ -99,7 +99,7 @@ export default {
   white-space: nowrap;
 }
 
-@media (max-width: 1024px), (orientation: landscape;) {
+@media (max-width: 1024px){
   .card .card-body, .card .card-title {
     max-height: 100%;
     white-space: normal;

@@ -6,24 +6,31 @@ import { movies } from '@/store/modules/movies'
 Vue.use(Vuex)
 
 const SET_CONFIGURATION = 'SET_CONFIGURATION'
+const SET_CONFIGURATION_LOADED = 'SET_CONFIGURATION_LOADED'
 export default new Vuex.Store({
   state: {
-    config: {}
+    config: {},
+    configLoaded: false
   },
   mutations: {
     SET_CONFIGURATION: (state, payload) => {
       state.config = payload
+    },
+    SET_CONFIGURATION_LOADED: (state, payload) => {
+      state.configLoaded = payload
     }
   },
   actions: {
-    loadConfiguration ({
+    async loadConfiguration ({
       commit,
       state
     }) {
-      request('/configuration', 'get').then(({ data }) => {
+      try {
+        const { data } = await request('/configuration', 'get')
         commit(SET_CONFIGURATION, data)
-      }).catch((error) => {
-        const config = {
+        commit(SET_CONFIGURATION_LOADED, true)
+      } catch (error) {
+        const configDefault = {
           images: {
             base_url: 'http://image.tmdb.org/t/p/',
             secure_base_url: 'https://image.tmdb.org/t/p/',
@@ -53,10 +60,10 @@ export default new Vuex.Store({
             ]
           }
         }
-        commit(SET_CONFIGURATION, config)
-
+        commit(SET_CONFIGURATION, configDefault)
+        commit(SET_CONFIGURATION_LOADED, true)
         console.error(error)
-      })
+      }
     }
   },
   getters: {
@@ -71,6 +78,9 @@ export default new Vuex.Store({
     },
     backdropSizesGetter: state => {
       return state.config.images.backdrop_sizes
+    },
+    configLoadedGetter: state => {
+      return state.configLoaded
     }
   },
   modules: {

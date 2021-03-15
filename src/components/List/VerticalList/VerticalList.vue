@@ -2,9 +2,7 @@
   <div>
     <div class="vertical-list" v-if="list.length !== 0">
       <template v-for="element in list">
-        <ListItem :item="element" :key="element.id">
-          <span slot="movie-info" class="movie-info">{{ new Date(element.release_date).getFullYear() || '' }}</span>
-        </ListItem>
+        <slot v-bind:element="element" name="list-item"/>
       </template>
     </div>
     <div v-else>
@@ -22,13 +20,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ListItem from '@/components/Item/ListItem.vue'
 import ListMixin from '@/components/List/ListMixin.js'
 import Pagination from '@/components/Pagination.vue'
 
 export default {
   name: 'VerticalList',
-  components: { Pagination, ListItem },
+  components: { Pagination },
   mixins: [
     ListMixin
   ],

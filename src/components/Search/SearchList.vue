@@ -6,18 +6,28 @@
       :total-pages="totalPages"
       :loading="loading"
       :change-page="changePage"
-      :empty-list-notice="'Sorry, no available element on this list.'"
-    ></VerticalList>
+    >
+      <template v-slot:list-item="{ element }">
+        <MovieItem :element="element"/>
+      </template>
+      <template v-slot:notice>
+        <div class="alert alert-warning" role="alert">
+          Sorry, no available element on this list.
+        </div>
+      </template>
+    </VerticalList>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import VerticalList from '@/components/List/VerticalList/VerticalList.vue'
+import MovieItem from '@/components/Item/MovieItem.vue'
 
 export default {
   name: 'SearchList',
   components: {
+    MovieItem,
     VerticalList
   },
   computed: {

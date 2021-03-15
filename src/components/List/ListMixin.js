@@ -23,10 +23,6 @@ export default {
     totalPages: {
       type: Number,
       default: 0
-    },
-    emptyListNotice: {
-      type: String,
-      default: ''
     }
   }
 }

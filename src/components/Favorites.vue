@@ -4,18 +4,27 @@
       :title="'Favorite movies'"
       :list="favoritesResultsGetter"
       :loading="loading"
-      :empty-list-notice="'Sorry, you have no favorite movies.'"
-    ></HorizontalList>
+    >
+      <template v-slot:list-item="{ element }">
+        <MovieItem :element="element"/>
+      </template>
+      <template v-slot:notice>
+        <div class="alert alert-warning" role="alert">
+          Add some favorite movies to see them in this list.
+        </div>
+      </template>
+    </HorizontalList>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import HorizontalList from '@/components/List/HorizontalList/HorizontalList.vue'
+import MovieItem from '@/components/Item/MovieItem.vue'
 
 export default {
   name: 'Favorites',
-  components: { HorizontalList },
+  components: { MovieItem, HorizontalList },
   created () {
     this.loadFavoriteMovies({})
   },

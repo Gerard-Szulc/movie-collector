@@ -10,15 +10,11 @@
     <div class="horizontal-list-wrapper" ref="horizontalListWrapper" v-if="!loading">
       <div class="horizontal-list" v-if="list.length !== 0">
         <template v-for="element in list">
-          <ListItem :item="element" :key="element.id" @listElementEvent="handleElementEvent">
-            <span slot="movie-info" class="movie-info">{{ new Date(element.release_date).getFullYear() || '' }}</span>
-          </ListItem>
+          <slot v-bind:element="element" name="list-item"/>
         </template>
       </div>
       <div v-else>
-        <div class="alert alert-warning" role="alert">
-          {{ emptyListNotice }}
-        </div>
+        <slot name="notice"></slot>
       </div>
     </div>
     <div v-else class="horizontal-list-wrapper">
@@ -28,27 +24,18 @@
 </template>
 
 <script>
-import ListItem from '@/components/Item/ListItem.vue'
 import Loading from '@/components/Loading.vue'
 import ListMixin from '@/components/List/ListMixin.js'
 
 export default {
   name: 'HorizontalList',
   components: {
-    Loading,
-    ListItem
+    Loading
   },
   mixins: [
     ListMixin
   ],
   methods: {
-    handleElementEvent ({
-      eventName,
-      payload
-    }) {
-      console.log()
-      this.$emit(eventName, payload)
-    },
     handleScrollList (direction) {
       const step = this.$refs.horizontalListWrapper.scrollWidth / ((this.list.length || 20) / 2)
       this.$refs.horizontalListWrapper.scrollLeft += direction ? step : -step
@@ -81,6 +68,7 @@ export default {
     background: $primary;
     border-radius: 10px;
   }
+
   max-width: 100vw;
   overflow: auto;
   scroll-behavior: smooth;
