@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "movie-collector-gs",
+    "public": "public"
+  }
+}
