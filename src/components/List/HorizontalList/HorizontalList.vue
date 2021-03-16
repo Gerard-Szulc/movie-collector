@@ -2,9 +2,9 @@
   <div>
     <div class="horizontal-list-header">
       <h3>{{ title }}</h3>
-      <div>
-        <button class="btn" @click="() => handleScrollList(false)"><i class="bi-arrow-left-circle"></i></button>
-        <button class="btn" @click="() => handleScrollList(true)"><i class="bi-arrow-right-circle"></i></button>
+      <div class="btn-group">
+        <button class="btn btn-primary btn-tmbd-style" @click="() => handleScrollList(false)"><i class="bi-arrow-left-circle"></i></button>
+        <button class="btn btn-primary btn-tmbd-style" @click="() => handleScrollList(true)"><i class="bi-arrow-right-circle"></i></button>
       </div>
     </div>
     <div class="horizontal-list-wrapper" ref="horizontalListWrapper" v-if="!loading">
@@ -79,5 +79,8 @@ export default {
   display: inline-flex;
   flex-wrap: nowrap;
   overflow: auto;
+}
+.btn-tmbd-style {
+  background-color: #01b4e4;
 }
 </style>

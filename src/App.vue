@@ -16,6 +16,7 @@ export default {
   components: { NavBar },
   created () {
     this.loadConfiguration()
+    this.loadFavoriteMovies({})
   },
   computed: {
     ...mapGetters({
@@ -24,7 +25,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      loadConfiguration: 'loadConfiguration'
+      loadConfiguration: 'loadConfiguration',
+      loadFavoriteMovies: 'movies/favorites/loadFavoriteMovies'
     })
   }
 }

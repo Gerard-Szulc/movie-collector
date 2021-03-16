@@ -6,21 +6,24 @@
           v-if="movieFullBackdrop || movieBackdrop"
           :src="movieFullBackdrop ? movieFullBackdrop : movieBackdrop"
           class="movie-background">
-        <div v-else class="movie-background movie-background-replacement">
+        <div class="movie-background movie-background-replacement">
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="col-sm-3">
-            <list-item :item="movie" item-title-prop="" >
-              <template v-slot:list-item-header >
-              <MovieListItemHeader :element="movie"/>
-              </template>
-            </list-item>
+      <div class="">
+        <div class="">
+          <div class="col-sm-12">
+            <div class="container">
+              <list-item :item="movie" item-title-prop="">
+                <template v-slot:list-item-header>
+                  <MovieListItemHeader :element="movie"/>
+                </template>
+              </list-item>
+            </div>
           </div>
-          <div class="movie-details col-sm-9">
+          <div class="movie-details col-sm-12">
             <div class="container">
               <h1 class="display-4">{{ movie.title }}</h1>
+              <AdditionalInfo :movie="movie" class="col-xs-12 col-md-4"></AdditionalInfo>
             </div>
           </div>
         </div>
@@ -28,23 +31,31 @@
 
       <div class="movie-details jumbotron jumbotron-fluid">
         <div class="container">
-          <div class="movie-details-other row col-xs-12">
-            <AdditionalInfo :movie="movie" class="col-xs-12 col-md-4"></AdditionalInfo>
-            <div class="col-xs-12 col-md-4 movie-overview">
+          <div class="movie-details-other col-xs-12">
+            <div class="col-xs-12 offset-md-3 col-md-6 movie-overview">
               <h5>Overview:</h5>
-              {{ movie.overview }}
+              <p>{{ movie.overview }}</p>
             </div>
-            <div class="col-xs-12 col-md-4">
-              <h1 class="display-4 offset-6 col-xs-6">Cast</h1>
-              <div class="cast-list float-right">
-                <template v-for="person in primaryCast">
-                  <ListItem :item="person" item-title-prop="original_name" item-image-prop="profile_path" :key="person.cast_id">
-                    <div slot="movie-info">
-                      {{ person.character }}
+            <div class="col-xs-12">
+              <HorizontalList
+                :title="'Cast'"
+                :list="primaryCast"
+                :loading="false"
+              >
+                <template v-slot:list-item="{ element }">
+                  <ListItem :item="element" item-title-prop="original_name" item-image-prop="profile_path"
+                            :key="element.cast_id" :redirect-enabled="false">
+                    <div slot="element-info" class="cast-character">
+                      {{ element.character }}
                     </div>
                   </ListItem>
                 </template>
-              </div>
+                <template v-slot:notice>
+                  <div class="alert alert-warning" role="alert">
+                    Sorry, no available cast on this list.
+                  </div>
+                </template>
+              </HorizontalList>
             </div>
 
           </div>
@@ -61,10 +72,16 @@ import axios from 'axios'
 import { request } from '@/utils/apiClient.js'
 import AdditionalInfo from '@/components/Movie/AdditionalInfo.vue'
 import MovieListItemHeader from '@/components/Item/MovieListItemHeader.vue'
+import HorizontalList from '@/components/List/HorizontalList/HorizontalList.vue'
 
 export default {
   name: 'Movie',
-  components: { MovieListItemHeader, AdditionalInfo, ListItem },
+  components: {
+    HorizontalList,
+    MovieListItemHeader,
+    AdditionalInfo,
+    ListItem
+  },
   props: {
     id: {
       required: true
@@ -180,15 +197,30 @@ export default {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
+.movie-overview {
+  & h5 {
+    text-align: center;
+  }
+
+  & p {
+    text-indent: 25px;
+    text-align: justify;
+  }
+}
+
 .movie-background-replacement {
+  position: absolute;
   height: 20rem;
   width: 100vw;
-  background-image: linear-gradient(40deg, $primary, transparent);
+  background-image: linear-gradient(180deg, $primary, transparent 45%);
+  z-index: -1;
 }
+
 .cast-list {
   &::-webkit-scrollbar {
     width: 2px;
   }
+
   &::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px $secondary;
     border-radius: 10px;
@@ -198,8 +230,22 @@ export default {
     background: $primary;
     border-radius: 10px;
   }
+
   overflow: auto;
   max-height: 40rem;
+}
+
+.cast-character {
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cast-character:hover {
+  max-height: 100%;
+  white-space: normal;
 }
 
 </style>

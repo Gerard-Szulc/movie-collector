@@ -1,9 +1,12 @@
 <template>
-  <ListItem :item="element" :key="element.id">
+  <ListItem :item="element" :key="element.id" :redirect-data="{
+        name: 'movie',
+        params: { id: element.id }
+      }">
     <template v-slot:list-item-header >
       <MovieListItemHeader :element="element"/>
     </template>
-    <template v-slot:movie-info>
+    <template v-slot:element-info>
       <span class="movie-info">{{ new Date(element.release_date).getFullYear() || '' }}</span>
     </template>
   </ListItem>

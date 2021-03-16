@@ -1,10 +1,7 @@
 <template>
   <div class="card movie-card">
     <slot name="list-item-header"></slot>
-    <router-link :to="{
-        name: 'movie',
-        params: { id: item.id }
-      }">
+    <component :is="redirectEnabled ? 'router-link' : 'div'"  :to="redirectData">
       <img
         v-if="item[itemImageProp]"
         :src="`${baseImageUrlGetter}${posterSizesGetter[1]}${item[itemImageProp]}`"
@@ -17,10 +14,10 @@
            :alt="item[itemTitleProp]">
       <div v-if="itemTitleProp" class="card-body">
         <p class="card-title"><strong>{{ item[itemTitleProp] }}</strong></p>
-        <slot name="movie-info">
+        <slot name="element-info">
         </slot>
       </div>
-    </router-link>
+    </component>
   </div>
 </template>
 
@@ -41,6 +38,14 @@ export default {
     itemTitleProp: {
       type: String,
       default: () => 'title'
+    },
+    redirectEnabled: {
+      type: Boolean,
+      default: true
+    },
+    redirectData: {
+      type: Object,
+      default: () => ({})
     }
   },
   computed: {

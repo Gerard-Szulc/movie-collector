@@ -18,26 +18,17 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import HorizontalList from '@/components/List/HorizontalList/HorizontalList.vue'
 import MovieItem from '@/components/Item/MovieItem.vue'
 
 export default {
   name: 'Favorites',
   components: { MovieItem, HorizontalList },
-  created () {
-    this.loadFavoriteMovies({})
-  },
   computed: {
     ...mapGetters({
       favoritesResultsGetter: 'movies/favorites/favoritesResultsGetter',
       loading: 'movies/favorites/loadingGetter'
-    })
-  },
-  methods: {
-    ...mapActions({
-      addFavoriteMovie: 'movies/favorites/addFavoriteMovie',
-      loadFavoriteMovies: 'movies/favorites/loadFavoriteMovies'
     })
   }
 }

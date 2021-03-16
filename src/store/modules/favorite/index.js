@@ -3,13 +3,13 @@ import { getStorageItem, setStorageItem } from '@/store/utils/localStorage'
 import { calculateTotalPages } from '@/store/utils'
 
 const SET_FAVORITE_RESULTS = 'SET_FAVORITE_RESULTS'
-// const CLEAR_FAVORITE_RESULTS = 'CLEAR_FAVORITE_RESULTS'
 const SET_FAVORITE_CURRENT_PAGE = 'SET_FAVORITE_CURRENT_PAGE'
 const SET_FAVORITE_TOTAL_PAGES = 'SET_FAVORITE_TOTAL_PAGES'
 const SET_FAVORITE_TOTAL_RESULTS = 'SET_FAVORITE_TOTAL_RESULTS'
 const ADD_FAVORITE_MOVIE = 'ADD_FAVORITE_MOVIE'
 const REMOVE_FAVORITE_MOVIE = 'REMOVE_FAVORITE_MOVIE'
 const SET_FAVORITE_LOADING = 'SET_FAVORITE_LOADING'
+const SET_FAVORITES_STATE = 'SET_FAVORITES_STATE'
 export const favorites = {
   namespaced: true,
   state: {
@@ -31,12 +31,6 @@ export const favorites = {
     }
   },
   mutations: {
-    CLEAR_FAVORITE_RESULTS: (state) => {
-      state.favorites = []
-      state.currentPage = 0
-      state.totalPages = 0
-      state.totalResults = 0
-    },
     SET_FAVORITE_RESULTS: (state, payload) => {
       state.favorites = payload
     },
@@ -56,43 +50,60 @@ export const favorites = {
       state.favorites.push(payload)
       state.totalPages = calculateTotalPages(state, 'favorites')
       state.totalResults = state.favorites.length
-      setStorageItem('favorites', state).catch(e => {
-        console.error(e)
-      })
     },
     REMOVE_FAVORITE_MOVIE: (state, payload) => {
       state.favorites = state.favorites.filter(movie => movie.id !== payload.id)
       state.totalPages = calculateTotalPages(state, 'favorites')
       state.totalResults = state.favorites.length
-      setStorageItem('favorites', state).catch(e => {
-        console.error(e)
-      })
+    },
+    SET_FAVORITES_STATE: (state, payload) => {
+      state.favorites = payload.favorites
+      state.totalPages = payload.totalPages
+      state.totalResults = payload.totalResults
     }
   },
   actions: {
     toggleFavoriteMovie ({
+      dispatch,
       commit,
       state
     }, movie) {
-      if (state.favorites.find(element => element.id === movie.id)) {
-        commit(REMOVE_FAVORITE_MOVIE, movie)
+      if (state.favorites.some(element => element.id === movie.id)) {
+        dispatch('setMovie', {
+          mutation: REMOVE_FAVORITE_MOVIE,
+          movie
+        })
         return
       }
-      commit(ADD_FAVORITE_MOVIE, movie)
+      dispatch('setMovie', {
+        mutation: ADD_FAVORITE_MOVIE,
+        movie
+      })
     },
-    loadFavoriteMovies ({
+    setMovie ({
       commit,
       state
+    }, {
+      mutation,
+      movie
+    }) {
+      const originalState = { ...state }
+      commit(mutation, movie)
+      setStorageItem('favorites', state).catch(e => {
+        commit(SET_FAVORITES_STATE, originalState)
+        console.error(e)
+      })
+    },
+    loadFavoriteMovies ({
+      commit
     }, { page = 1 }) {
       commit(SET_FAVORITE_LOADING, true)
       getStorageItem('favorites').then((data) => {
-        console.log(data)
         commit(SET_FAVORITE_RESULTS, data.favorites)
         commit(SET_FAVORITE_CURRENT_PAGE, data.currentPage)
         commit(SET_FAVORITE_TOTAL_PAGES, data.totalPages)
         commit(SET_FAVORITE_TOTAL_RESULTS, data.totalResults)
         commit(SET_FAVORITE_LOADING, false)
-        this.seachResult = data.results
       }).catch(() => {
         commit(SET_FAVORITE_RESULTS, [])
         commit(SET_FAVORITE_LOADING, false)
