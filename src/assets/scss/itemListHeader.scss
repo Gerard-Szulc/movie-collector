@@ -5,15 +5,15 @@
   justify-content: flex-end;
   & i {
     border-radius: 10px;
-    transition: all ease-in-out 0.3s;
-    color: #ffc500;
+    transition: all ease-in-out 0.1s;
+    color: #E83E8C;
     text-align: center;
     width: 20%;
     font-size: 20px;
-    background: radial-gradient(circle 16px at center, rgba(34, 33, 33, 0.7), rgba(255, 255, 255, 0));
+    background: radial-gradient(circle 18px at center, rgba(34, 33, 33, 0.7), rgba(255, 255, 255, 0));
     &:hover {
-      transform: scale(1.1);
-      color: gold;
+      font-size: 25px;
+      color: #DC3545;
     }
   }
 }

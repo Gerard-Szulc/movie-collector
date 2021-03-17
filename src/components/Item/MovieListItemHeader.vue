@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isLoading && element" class="list-item-header" title="Click to favorite this movie.">
-    <i :class="isFavoriteMovie(element) ? `bi-star-fill`: 'bi-star'" @click="() => toggleFavorite(element)"></i>
+    <i :class="isFavoriteMovie(element) ? `bi-heart-fill`: 'bi-heart'" @click="() => toggleFavorite(element)"></i>
   </div>
 </template>
 
