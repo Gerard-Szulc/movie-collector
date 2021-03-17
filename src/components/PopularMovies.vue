@@ -4,6 +4,10 @@
       :title="'Popular movies'"
       :list="popularResultsGetter"
       :loading="loadingPopularMoviesGetter"
+      :total-pages="totalPages"
+      :current-page="currentPage"
+      :change-page="loadPopularMovies"
+      :pagination="true"
     >
       <template v-slot:list-item="{ element }">
         <MovieItem :element="element" :key="element.id"/>
@@ -31,6 +35,8 @@ export default {
   computed: {
     ...mapGetters({
       popularResultsGetter: 'movies/popular/popularResultsGetter',
+      totalPages: 'movies/popular/totalPagesGetter',
+      currentPage: 'movies/popular/currentPageGetter',
       loadingPopularMoviesGetter: 'movies/popular/loadingPopularMoviesGetter'
     })
   },

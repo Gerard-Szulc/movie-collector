@@ -8,17 +8,16 @@
       </div>
     </div>
     <div class="horizontal-list-wrapper" ref="horizontalListWrapper" v-if="!loading">
-      <transition name="list" >
-        <transition-group name="list" class="horizontal-list" tag="div" v-if="list.length !== 0">
+        <div  class="horizontal-list" v-if="list.length !== 0">
+          <div v-if="pagination && previous > 0" :key="'prev-page'" class="horizontal-list-next-page" @click="getPreviousPage"><i class="bi-chevron-left"></i></div>
           <template v-for="element in list">
             <slot v-bind:element="element" name="list-item"/>
           </template>
-        </transition-group>
+          <div v-if="pagination && next <= totalPages" :key="'next-page'" class="horizontal-list-next-page" @click="getNextPage"><i class="bi-chevron-right"></i></div>
+        </div>
         <div v-else>
           <slot name="notice"></slot>
         </div>
-      </transition>
-
     </div>
     <div v-else class="horizontal-list-wrapper">
       <Loading></Loading>
@@ -38,10 +37,26 @@ export default {
   mixins: [
     ListMixin
   ],
+  computed: {
+    next () {
+      return this.currentPage + 1
+    },
+    previous () {
+      return this.currentPage - 1
+    }
+  },
   methods: {
     handleScrollList (direction) {
       const step = this.$refs.horizontalListWrapper.scrollWidth / ((this.list.length || 20) / 2)
       this.$refs.horizontalListWrapper.scrollLeft += direction ? step : -step
+    },
+    getPreviousPage () {
+      this.$refs.horizontalListWrapper.scrollLeft = 0
+      this.changePage(this.previous)
+    },
+    getNextPage () {
+      this.$refs.horizontalListWrapper.scrollLeft = 0
+      this.changePage(this.next)
     }
   }
 }
@@ -58,8 +73,13 @@ export default {
 }
 
 .horizontal-list-wrapper {
+  max-width: 100vw;
+  overflow: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+
   &::-webkit-scrollbar {
-    height: 3px;
+    height: 5px;
   }
 
   &::-webkit-scrollbar-track {
@@ -71,12 +91,6 @@ export default {
     background: $primary;
     border-radius: 10px;
   }
-
-  max-width: 100vw;
-  overflow: auto;
-  overflow-y: hidden;
-
-  scroll-behavior: smooth;
 }
 
 .horizontal-list {
@@ -84,18 +98,22 @@ export default {
   display: inline-flex;
   flex-wrap: nowrap;
   overflow: hidden;
+  & .horizontal-list-next-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10rem;
+    height: 237px;
+    border-radius: 10px;
+    margin: 14px;
+    &:hover {
+      cursor: pointer;
+      background-color: #90cea136;;
+    }
+  }
 }
 
 .btn-tmbd-style {
   background-color: #01b4e4;
-}
-
-.list-enter-active, .list-leave-active {
-  transition: all ease-in-out 0.2s;
-  opacity: 1;
-}
-.list-enter, .list-leave-to  {
-  opacity: 0;
-  transform: scale(1.2);
 }
 </style>

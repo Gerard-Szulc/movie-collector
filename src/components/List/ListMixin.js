@@ -23,6 +23,10 @@ export default {
     totalPages: {
       type: Number,
       default: 0
+    },
+    pagination: {
+      type: Boolean,
+      default: false
     }
   }
 }

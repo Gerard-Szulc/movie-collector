@@ -51,7 +51,7 @@ export const popular = {
     loadPopularMovies ({
       commit,
       state
-    }, { page = 1 }) {
+    }, page = 1) {
       commit(SET_POPULAR_LOADING, true)
       commit(CLEAR_POPULAR_RESULTS, true)
       request('/movie/popular', 'get', {
