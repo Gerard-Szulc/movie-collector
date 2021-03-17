@@ -6,7 +6,7 @@
       :loading="loadingPopularMoviesGetter"
     >
       <template v-slot:list-item="{ element }">
-        <MovieItem :element="element"/>
+        <MovieItem :element="element" :key="element.id"/>
       </template>
       <template v-slot:notice>
         <div class="alert alert-warning" role="alert">

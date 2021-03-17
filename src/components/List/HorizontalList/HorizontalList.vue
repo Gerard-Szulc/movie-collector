@@ -8,14 +8,17 @@
       </div>
     </div>
     <div class="horizontal-list-wrapper" ref="horizontalListWrapper" v-if="!loading">
-      <div class="horizontal-list" v-if="list.length !== 0">
-        <template v-for="element in list">
-          <slot v-bind:element="element" name="list-item"/>
-        </template>
-      </div>
-      <div v-else>
-        <slot name="notice"></slot>
-      </div>
+      <transition name="list" >
+        <transition-group name="list" class="horizontal-list" tag="div" v-if="list.length !== 0">
+          <template v-for="element in list">
+            <slot v-bind:element="element" name="list-item"/>
+          </template>
+        </transition-group>
+        <div v-else>
+          <slot name="notice"></slot>
+        </div>
+      </transition>
+
     </div>
     <div v-else class="horizontal-list-wrapper">
       <Loading></Loading>
@@ -44,7 +47,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "../../../../node_modules/bootstrap/scss/bootstrap";
 @import "../../../../node_modules/bootstrap/scss/variables";
 
@@ -71,6 +74,8 @@ export default {
 
   max-width: 100vw;
   overflow: auto;
+  overflow-y: hidden;
+
   scroll-behavior: smooth;
 }
 
@@ -78,9 +83,19 @@ export default {
   flex-direction: row;
   display: inline-flex;
   flex-wrap: nowrap;
-  overflow: auto;
+  overflow: hidden;
 }
+
 .btn-tmbd-style {
   background-color: #01b4e4;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all ease-in-out 0.2s;
+  opacity: 1;
+}
+.list-enter, .list-leave-to  {
+  opacity: 0;
+  transform: scale(1.2);
 }
 </style>
