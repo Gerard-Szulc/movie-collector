@@ -12,7 +12,7 @@
       </template>
       <template v-slot:notice>
         <div class="alert alert-warning" role="alert">
-          Sorry, no available element on this list.
+          Sorry, no results found.
         </div>
       </template>
     </VerticalList>

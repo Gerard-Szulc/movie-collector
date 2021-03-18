@@ -1,5 +1,5 @@
 <template>
-  <nav id="nav" class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <nav id="nav" class="navbar navbar-expand-sm navbar-dark navbar-custom-dark">
     <router-link class="navbar-brand" to="/">Movie Collector</router-link>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,10 +24,14 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 #nav {
   position: sticky;
   top: 0;
   z-index: 1099;
+}
+
+.navbar-custom-dark {
+  background-color: #0d253f;
 }
 </style>

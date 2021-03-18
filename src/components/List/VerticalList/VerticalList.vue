@@ -6,9 +6,7 @@
       </template>
     </div>
     <div v-else>
-      <div class="alert alert-warning" role="alert">
-        {{ emptyListNotice }}
-      </div>
+        <slot name="notice"></slot>
     </div>
     <Pagination
       :currentPage="currentPage"

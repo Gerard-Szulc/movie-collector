@@ -3,7 +3,7 @@
     <div id="movie-container">
       <div class="movie-background-wrapper">
         <img
-          v-if="movieFullBackdrop || movieBackdrop"
+          v-if="movieFullBackdrop ? movieFullBackdrop : movieBackdrop"
           :src="movieFullBackdrop ? movieFullBackdrop : movieBackdrop"
           class="movie-background">
         <div class="movie-background movie-background-replacement">
@@ -68,11 +68,11 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import ListItem from '@/components/Item/ListItem.vue'
-import axios from 'axios'
 import { request } from '@/utils/apiClient.js'
 import AdditionalInfo from '@/components/Movie/AdditionalInfo.vue'
 import MovieListItemHeader from '@/components/Item/MovieListItemHeader.vue'
 import HorizontalList from '@/components/List/HorizontalList/HorizontalList.vue'
+import handleGetImageMixin from '@/components/handleGetImageMixin.js'
 
 export default {
   name: 'Movie',
@@ -82,6 +82,9 @@ export default {
     AdditionalInfo,
     ListItem
   },
+  mixins: [
+    handleGetImageMixin
+  ],
   props: {
     id: {
       required: true
@@ -127,29 +130,10 @@ export default {
       if (!this.movie.backdrop_path) {
         return
       }
-      this.toDataURL(`${this.baseImageUrlGetter}${this.backdropSizesGetter[0]}${this.movie.backdrop_path}`).then((data) => {
-        this.movieBackdrop = data
-      })
-      this.toDataURL(`${this.baseImageUrlGetter}${this.backdropSizesGetter[this.backdropSizesGetter.length - 1]}${this.movie.backdrop_path}`).then((data) => {
+      this.movieBackdrop = `${this.baseImageUrlGetter}${this.backdropSizesGetter[0]}${this.movie.backdrop_path}`
+      this.toDataURL(`${this.baseImageUrlGetter}${this.backdropSizesGetter[this.backdropSizesGetter.length - 2]}${this.movie.backdrop_path}`).then((data) => {
         this.movieFullBackdrop = data
       })
-    },
-    toDataURL (url) {
-      return axios({
-        url,
-        method: 'get',
-        headers: null,
-        responseType: 'blob'
-      })
-        .then(response => {
-          return response.data
-        })
-        .then(blob => new Promise((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onloadend = () => resolve(reader.result)
-          reader.onerror = reject
-          reader.readAsDataURL(blob)
-        }))
     },
     getCast (id) {
       request(`/movie/${id}/credits`).then(({ data }) => {

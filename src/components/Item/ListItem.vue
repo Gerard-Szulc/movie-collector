@@ -3,8 +3,8 @@
     <slot name="list-item-header"></slot>
     <component :is="redirectEnabled ? 'router-link' : 'div'"  :to="redirectData">
       <img
-        v-if="item[itemImageProp]"
-        :src="`${baseImageUrlGetter}${posterSizesGetter[1]}${item[itemImageProp]}`"
+        v-if="item[itemImageProp] && (movieFullImage !== null || movieImage !== null)"
+        :src="movieFullImage ? movieFullImage : movieImage"
         class="card-img-top"
         :alt="item[itemTitleProp]"
       >
@@ -22,7 +22,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
+import handleGetImageMixin from '@/components/handleGetImageMixin.js'
 
 export default {
   name: 'ListItem',
@@ -48,16 +49,36 @@ export default {
       default: () => ({})
     }
   },
+  mixins: [
+    handleGetImageMixin
+  ],
+  data () {
+    return {
+      movieImage: null,
+      movieFullImage: null
+    }
+  },
   computed: {
     ...mapGetters({
-      posterSizesGetter: 'posterSizesGetter',
+      poster_pathGetter: 'posterSizesGetter',
+      profile_pathGetter: 'posterSizesGetter',
       baseImageUrlGetter: 'baseImageUrlGetter'
     })
   },
+  created () {
+    this.loadImages()
+  },
   methods: {
-    ...mapActions({
-      addFavorite: 'movies/favorites/addFavoriteMovie'
-    })
+    loadImages () {
+      if (!this.item[this.itemImageProp]) {
+        return
+      }
+      const itemImagePropGetter = this[`${this.itemImageProp}Getter`]
+      this.movieImage = `${this.baseImageUrlGetter}${itemImagePropGetter[0]}${this.item[this.itemImageProp]}`
+      this.toDataURL(`${this.baseImageUrlGetter}${itemImagePropGetter[this[`${this.itemImageProp}Getter`].length - 2]}${this.item[this.itemImageProp]}`).then((data) => {
+        this.movieFullImage = data
+      })
+    }
   }
 }
 </script>
