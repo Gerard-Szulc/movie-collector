@@ -3,7 +3,7 @@
     <label for="search"></label>
     <input id="search" class="form-control mr-md-2" type="search" placeholder="Search movies" aria-label="Searchmovies"
            v-model="searchValue" @input.prevent="search">
-<!--    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>-->
+    <button class="btn btn-outline-primary my-2 my-sm-0 search-button" type="submit">Search</button>
   </form>
 </template>
 
@@ -59,5 +59,18 @@ export default {
 
 #search-list {
   float: right;
+}
+
+.search-button {
+  display: none
+}
+
+@media screen and (max-width: 576px) {
+  .search-button {
+    color: #0d253f;
+    background-color: #01b4e4;
+    display: inline-block;
+    width: 100%;
+  }
 }
 </style>

@@ -77,6 +77,8 @@ export default {
       this.movieImage = `${this.baseImageUrlGetter}${itemImagePropGetter[0]}${this.item[this.itemImageProp]}`
       this.toDataURL(`${this.baseImageUrlGetter}${itemImagePropGetter[this[`${this.itemImageProp}Getter`].length - 2]}${this.item[this.itemImageProp]}`).then((data) => {
         this.movieFullImage = data
+      }).catch(() => {
+        this.movieFullImage = null
       })
     }
   }

@@ -10,7 +10,7 @@ const SET_MOVIE_LOADING = 'SET_MOVIE_LOADING'
 export const movies = {
   namespaced: true,
   state: {
-    loading: false,
+    loading: true,
     movie: {}
   },
   mutations: {
