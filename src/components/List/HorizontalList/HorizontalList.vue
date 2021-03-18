@@ -103,6 +103,7 @@ export default {
     justify-content: center;
     align-items: center;
     width: 10rem;
+    min-width: 10rem;
     height: 237px;
     border-radius: 10px;
     margin: 14px;
