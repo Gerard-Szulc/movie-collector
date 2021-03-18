@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="redirectToSearchList" class="form-inline my-2 my-lg-0">
     <label for="search"></label>
-    <input id="search" class="form-control mr-md-2" type="search" placeholder="Search movies" aria-label="Searchmovies"
+    <input id="search" class="form-control mr-md-2" type="search" placeholder="Search for a movie" aria-label="Searchmovies"
            v-model="searchValue" @input.prevent="search">
     <button class="btn btn-outline-primary my-2 my-sm-0 search-button" type="submit">Search</button>
   </form>
