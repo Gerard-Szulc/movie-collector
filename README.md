@@ -1,5 +1,7 @@
 # movie-collector
 
+You need to provide your own tmdb (https://www.themoviedb.org/) api key as VUE_APP_API_AUTH_TOKEN environment variable.
+
 ## Project setup
 ```
 npm install
