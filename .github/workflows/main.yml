@@ -13,9 +13,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
       - name: Installing project dependencies
-        run: npm install
-      - name: Ruunning unit tests
-        run: npm run test
+        run: npm ci
       - name: Building the project
         run: npm run build
         env:
