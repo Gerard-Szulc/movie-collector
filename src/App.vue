@@ -1,7 +1,9 @@
 <template>
   <div id="app" v-if="configLoaded">
     <NavBar></NavBar>
-    <router-view id="dashboard" />
+    <div id="dashboard">
+      <router-view />
+    </div>
   </div>
 </template>
 

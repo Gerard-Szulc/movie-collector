@@ -1,13 +1,11 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
 import { request } from '@/utils/apiClient.js'
 import { movies } from '@/store/modules/movies'
+import {createStore} from "vuex";
 
-Vue.use(Vuex)
 
 const SET_CONFIGURATION = 'SET_CONFIGURATION'
 const SET_CONFIGURATION_LOADED = 'SET_CONFIGURATION_LOADED'
-export default new Vuex.Store({
+export const store = createStore({
   state: {
     config: {},
     configLoaded: false
