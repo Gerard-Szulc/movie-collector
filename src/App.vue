@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-if="configLoaded">
+  <div v-if="configLoaded" id="app">
     <NavBar></NavBar>
     <div id="dashboard">
       <router-view />
@@ -8,28 +8,16 @@
 </template>
 
 <style lang="scss">
-@import 'assets/scss/custom';
+@import "assets/scss/custom";
 </style>
-<script>
-import NavBar from '@/components/NavBar.vue'
-import { mapActions, mapGetters } from 'vuex'
+<script setup lang="ts">
+import { useStore } from "vuex";
+import NavBar from "@/components/NavBar.vue";
+import { computed } from "vue";
 
-export default {
-  components: { NavBar },
-  created () {
-    this.loadConfiguration()
-    this.loadFavoriteMovies({})
-  },
-  computed: {
-    ...mapGetters({
-      configLoaded: 'configLoadedGetter'
-    })
-  },
-  methods: {
-    ...mapActions({
-      loadConfiguration: 'loadConfiguration',
-      loadFavoriteMovies: 'movies/favorites/loadFavoriteMovies'
-    })
-  }
-}
+const { dispatch, getters } = useStore();
+
+dispatch("loadConfiguration");
+dispatch("movies/favorites/loadFavoriteMovies");
+const configLoaded = computed((): boolean => getters.configLoadedGetter);
 </script>
